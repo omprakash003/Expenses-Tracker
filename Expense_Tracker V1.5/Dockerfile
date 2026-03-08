@@ -4,7 +4,7 @@ WORKDIR /app
 COPY . .
 RUN cobc -x add-expense.cob -o add-expense
 RUN cobc -x view-total.cob -o view-total
-RUN cobc -x view-records.cob -o view-records
+RUN cobc -x view-records.COB -o view-records
 RUN pip install flask
 EXPOSE 5000
 CMD ["python", "app.py"]
