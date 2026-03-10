@@ -56,7 +56,7 @@ def add_expenses():
         stdin_input = f"{date}\n{amount}\n{desc}\n"
         print(f"[add-expenses] stdin={repr(stdin_input)}")
 
-        out, err = run_cobol("add-expense.exe", stdin_input)
+        out, err = run_cobol("add-expense", stdin_input)
         if out is None:
             return jsonify({"error": f"Failed on expense '{desc}': {err}"}), 500
         results.append(out)
@@ -69,7 +69,7 @@ def add_expenses():
 # ── API 2: View total → view-total.exe ───────────────────────────────────────
 @app.route("/api/total", methods=["GET"])
 def view_total():
-    out, err = run_cobol("view-total.exe")
+    out, err = run_cobol("view-total")
     if out is None:
         return jsonify({"error": err}), 500
     return jsonify({"output": out, "stderr": err})
@@ -77,7 +77,7 @@ def view_total():
 # ── API 3: View records → view-records.exe ───────────────────────────────────
 @app.route("/api/records", methods=["GET"])
 def view_records():
-    out, err = run_cobol("view-records.exe")
+    out, err = run_cobol("view-records")
     if out is None:
         return jsonify({"error": err}), 500
     return jsonify({"output": out, "stderr": err})
@@ -105,12 +105,13 @@ def debug():
         "base_dir": BASE_DIR,
         "dat_exists": dat_exists,
         "dat_content": dat_content,
-        "add_expenses_exists": os.path.exists(os.path.join(BASE_DIR, "add-expense.exe")),
-        "view_total_exists":   os.path.exists(os.path.join(BASE_DIR, "view-total.exe")),
-        "view_records_exists": os.path.exists(os.path.join(BASE_DIR, "view-records.exe")),
+        "add_expenses_exists": os.path.exists(os.path.join(BASE_DIR, "add-expense")),
+        "view_total_exists":   os.path.exists(os.path.join(BASE_DIR, "view-total")),
+        "view_records_exists": os.path.exists(os.path.join(BASE_DIR, "view-records")),
     })
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(debug=False, host="0.0.0.0", port=port)
+
 
